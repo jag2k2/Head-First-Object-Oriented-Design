@@ -83,37 +83,42 @@ class Inventory:
         self._guitars.append(guitar)
 
     def get_guitar(self, serial_number: str) -> Guitar:
-        for i in range(len(self._guitars)):
-            if self._guitars[i].get_serial_number == serial_number:
-                return self._guitars[i].get_serial_number
+        for j in range(len(self._guitars)):
+            if self._guitars[j].get_serial_number == serial_number:
+                return self._guitars[j].get_serial_number
 
-    def search(self, search_guitar: Guitar) -> Guitar:
+    def search(self, search_guitar: Guitar) -> List[Guitar]:
+        _matching_guitars: List[Guitar] = []
         for i in range(len(self._guitars)):
             if self._guitars[i].get_builder() is search_guitar.get_builder():
                 if self._guitars[i].get_model().lower() == search_guitar.get_model().lower():
                     if self._guitars[i].get_type() is search_guitar.get_type():
                         if self._guitars[i].get_back_wood() is search_guitar.get_back_wood():
                             if self._guitars[i].get_top_wood() is search_guitar.get_top_wood():
-                                return self._guitars[i]
+                                _matching_guitars.append(self._guitars[i])
+        return _matching_guitars
 
 
 inventory: Inventory = Inventory()
 inventory.add_guitar("V132", 1000, Builder.FENDER, "Stratocaster", Type.ELECTRIC, Wood.ALDER, Wood.ALDER)
 inventory.add_guitar("V133", 2000, Builder.GIBSON, "Les Paul", Type.ELECTRIC, Wood.MAHOGANY, Wood.MAPLE)
 inventory.add_guitar("V134", 2500, Builder.MARTIN, "GPC", Type.ACOUSTIC, Wood.CEDAR, Wood.CEDAR)
+inventory.add_guitar("V135", 2900, Builder.FENDER, "Stratocaster", Type.ELECTRIC, Wood.ALDER, Wood.ALDER)
 
 erin_preferences: Guitar = Guitar("", 0, Builder.FENDER, "stratocaster", Type.ELECTRIC, Wood.ALDER, Wood.ALDER)
 
-result: Guitar = inventory.search(erin_preferences)
+results: List[Guitar] = inventory.search(erin_preferences)
 
-if result is not None:
-    print("You might like this one:")
-    print("Builder: " + result.get_builder().name)
-    print("Model: " + result.get_model())
-    print("Type: " + result.get_type().name)
-    print("Back and sides: " + result.get_back_wood().name)
-    print("Top: " + result.get_top_wood().name)
-    print("Price: " + str(result.get_price()))
+if results:
+    for i in range(len(results)):
+        print("You might like this one:")
+        print("Builder: " + results[i].get_builder().name)
+        print("Model: " + results[i].get_model())
+        print("Type: " + results[i].get_type().name)
+        print("Back and sides: " + results[i].get_back_wood().name)
+        print("Top: " + results[i].get_top_wood().name)
+        print("Price: " + str(results[i].get_price()))
+        print("")
 else:
     print("Sorry we don't have anything for you")
 
