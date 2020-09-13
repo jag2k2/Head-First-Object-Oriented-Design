@@ -33,13 +33,16 @@ class GuitarSpec:
     _type: Type
     _back_wood: Wood
     _top_wood: Wood
+    _num_strings: float
 
-    def __init__(self, builder: Builder, model: str, type: Type, back_wood: Wood, top_wood: Wood) -> None:
+    def __init__(self, builder: Builder, model: str, type: Type, back_wood: Wood, top_wood: Wood,
+                 num_strings: float) -> None:
         self._builder = builder
         self._model = model
         self._type = type
         self._back_wood = back_wood
         self._top_wood = top_wood
+        self._num_strings = num_strings
 
     def get_builder(self) -> Builder:
         return self._builder
@@ -56,13 +59,17 @@ class GuitarSpec:
     def get_top_wood(self) -> Wood:
         return self._top_wood
 
+    def get_num_strings(self) -> float:
+        return self._num_strings
+
     def matches(self, other_spec: 'GuitarSpec') -> bool:
         if self._builder is other_spec.get_builder():
             if self._model.lower() == other_spec._model.lower():
                 if self._type is other_spec._type:
                     if self._back_wood is other_spec._back_wood:
                         if self._top_wood is other_spec._top_wood:
-                            return True
+                            if self._num_strings == other_spec._num_strings:
+                                return True
         else:
             return False
 
@@ -114,16 +121,16 @@ class Inventory:
 
 
 inventory: Inventory = Inventory()
-spec1: GuitarSpec = GuitarSpec(Builder.FENDER, "Stratocaster", Type.ELECTRIC, Wood.ALDER, Wood.ALDER)
+spec1: GuitarSpec = GuitarSpec(Builder.FENDER, "Stratocaster", Type.ELECTRIC, Wood.ALDER, Wood.ALDER, 6)
 inventory.add_guitar("V132", 1000, spec1)
-spec2: GuitarSpec = GuitarSpec(Builder.GIBSON, "Les Paul", Type.ELECTRIC, Wood.MAHOGANY, Wood.MAPLE)
+spec2: GuitarSpec = GuitarSpec(Builder.GIBSON, "Les Paul", Type.ELECTRIC, Wood.MAHOGANY, Wood.MAPLE, 6)
 inventory.add_guitar("V133", 2000, spec2)
-spec3: GuitarSpec = GuitarSpec(Builder.MARTIN, "GPC", Type.ACOUSTIC, Wood.CEDAR, Wood.CEDAR)
+spec3: GuitarSpec = GuitarSpec(Builder.MARTIN, "GPC", Type.ACOUSTIC, Wood.CEDAR, Wood.CEDAR, 6)
 inventory.add_guitar("V134", 2500, spec3)
-spec4: GuitarSpec = GuitarSpec(Builder.FENDER, "Stratocaster", Type.ELECTRIC, Wood.ALDER, Wood.ALDER)
+spec4: GuitarSpec = GuitarSpec(Builder.FENDER, "Stratocaster", Type.ELECTRIC, Wood.ALDER, Wood.ALDER, 6)
 inventory.add_guitar("V135", 2900, spec4)
 
-erin_preferences: GuitarSpec = GuitarSpec(Builder.FENDER, "stratocaster", Type.ELECTRIC, Wood.ALDER, Wood.ALDER)
+erin_preferences: GuitarSpec = GuitarSpec(Builder.FENDER, "stratocaster", Type.ELECTRIC, Wood.ALDER, Wood.ALDER, 6)
 
 results: List[Guitar] = inventory.search(erin_preferences)
 
@@ -135,6 +142,7 @@ if results:
         print("Type: " + results[i].get_spec().get_type().name)
         print("Back and sides: " + results[i].get_spec().get_back_wood().name)
         print("Top: " + results[i].get_spec().get_top_wood().name)
+        print("Strings: " + str(results[i].get_spec().get_num_strings()))
         print("Price: " + str(results[i].get_price()))
         print("")
 else:
