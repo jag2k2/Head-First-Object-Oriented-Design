@@ -62,10 +62,11 @@ class Guitar:
     _price: float
     _spec: GuitarSpec
 
-    def __init__(self, serial_number: str, price: float, spec: GuitarSpec) -> None:
+    def __init__(self, serial_number: str, price: float, builder: Builder, model: str, type: Type, back_wood: Wood,
+                 top_wood: Wood) -> None:
         self._serial_number = serial_number
         self._price = price
-        self._spec = spec
+        self._spec = GuitarSpec(builder, model, type, back_wood, top_wood)
 
     def get_serial_number(self) -> str:
         return self._serial_number
@@ -88,8 +89,7 @@ class Inventory:
 
     def add_guitar(self, serial_number: str, price: float, builder: Builder, model: str, type: Type, back_wood: Wood,
                    top_wood: Wood) -> None:
-        guitar_spec: GuitarSpec = GuitarSpec(builder, model, type, back_wood, top_wood)
-        guitar: Guitar = Guitar(serial_number, price, guitar_spec)
+        guitar: Guitar = Guitar(serial_number, price, builder, model, type, back_wood, top_wood)
         self._guitars.append(guitar)
 
     def get_guitar(self, serial_number: str) -> Guitar:
