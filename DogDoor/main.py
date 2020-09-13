@@ -12,7 +12,7 @@ class DogDoor:
         print("The dog door closes.")
         self._open = False
 
-    def isOpen(self) -> bool:
+    def is_open(self) -> bool:
         return self._open
 
 
@@ -24,7 +24,7 @@ class Remote:
 
     def press_button(self) -> None:
         print("Pressing the remote control button...")
-        if self._door.isOpen():
+        if self._door.is_open():
             self._door.close()
         else:
             self._door.open()
