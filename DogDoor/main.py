@@ -1,3 +1,6 @@
+from threading import Timer
+
+
 class DogDoor:
     _open: bool
 
@@ -28,6 +31,8 @@ class Remote:
             self._door.close()
         else:
             self._door.open()
+            timer: Timer = Timer(5, self._door.close)
+            timer.start()
 
 
 door: DogDoor = DogDoor()
@@ -35,8 +40,6 @@ remote: Remote = Remote(door)
 print("Fido barks to go outside...")
 remote.press_button()
 print("\nFido has gone outside")
-remote.press_button()
-print("\nFido's all done")
-remote.press_button()
-print("\nFido's back inside")
-remote.press_button()
+print("Fido's all done")
+print("Fido's back inside\n")
+
